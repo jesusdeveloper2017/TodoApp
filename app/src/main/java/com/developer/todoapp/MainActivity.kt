@@ -30,15 +30,23 @@ class MainActivity: ComponentActivity() {
 
             TodoAppTheme {
 
+                /**
+                 * Código donde todas las vistas o composables tienen acceso
+                 * a la variable isShown lo que hace que cada vez que esta
+                 * variable se actualice todas las vistas se actualicen o pasen
+                 * por el fenómeno de recomposisión aunque no dependan de esta
+                 * variable
+                */
                 /*
                 var isShown:Boolean by remember { mutableStateOf(false) }
 
                 Column(modifier = Modifier.padding(56.dp)) {
 
                     if (isShown) {
-                        Text(text = "This is a message")
+                        Text(text = "Dependo de isShown")
                     }
-                    Text(text = "Hello, world!",
+
+                    Text(text = "NO Dependo de isShown (clickeame)",
                          modifier = Modifier.clickable {
                                         isShown = !isShown
                                     }
@@ -46,7 +54,20 @@ class MainActivity: ComponentActivity() {
                 }
                 */
 
-                HelloWorldView()
+                /**
+                 * Optimización de la Reposición en Interfaces con Jetpack Compose:
+                 *
+                 * Con este enfoque la variable isShown
+                 * solo es accedida dentro de la función MainView()
+                 * y dentro de la función Text1() porque la recibe por parámetro para
+                 * leerla dentro de Text1().
+                 *
+                 * Como isShown NO se usa directamente dentro de la función Text2() sino
+                 * que se modifica dentro del contexto de la función MainView(),
+                 * las vistas que se encuentran dentro de la función Text2()
+                 * NO se recomponen cuando la variable isShown cambia su valor
+                */
+                MainView()
 
             }
         }
@@ -54,15 +75,16 @@ class MainActivity: ComponentActivity() {
 }
 
 @Composable
-fun HelloWorldView() {
+fun MainView() {
 
     var isShown:Boolean by remember { mutableStateOf(false) }
 
     Column(modifier = Modifier.padding(56.dp)) {
 
-        MessageText(isShown)
+        Text1(isShown)
 
-        HelloWorldText(onClick = {
+        Text2(onClick = {
+
             //Se le asigna el valor contrario
             isShown = !isShown
         })
@@ -71,18 +93,18 @@ fun HelloWorldView() {
 }
 
 @Composable
-fun MessageText(isShown:Boolean) {
+fun Text1(isShown:Boolean) {
 
     if (isShown) {
-        Text(text = "This is a message")
+        Text(text = "Dependo de isShown")
     }
 
 }
 
 @Composable
-fun HelloWorldText(onClick: () -> Unit) {
+fun Text2(onClick: () -> Unit) {
 
-    Text(text = "Hello, world!",
+    Text(text = "Dependo de isShown (clickeame)",
          modifier = Modifier.clickable {
                         onClick()
                     }
