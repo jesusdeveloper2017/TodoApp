@@ -81,11 +81,13 @@ fun MainView() {
 
     Column(modifier = Modifier.padding(56.dp)) {
 
+        //Hace uso de isShown leyendo la variable dentro de la función Text1()
         Text1(isShown)
 
+        //Hace uso de isShown pero sin leer la variable dentro de la función Text2()
         Text2(onClick = {
 
-            //Se le asigna el valor contrario
+            //Se le asigna el valor contrario a isShown desde MainView()
             isShown = !isShown
         })
 
