@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">TodoApp</string>
+    <string name="delete_all">Borrar todo</string>
+    <string name="complete_tasks">Completadas</string>
+    <string name="incomplete_tasks">Incompletas</string>
+    <string name="task_updated">Tarea actualizada</string>
+    <string name="all_tasks_deleted">Se borraron todas las tareas</string>
+    <string name="task_deleted">Tarea borrada</string>
+    <string name="task">Tarea</string>
+    <string name="completed">Completada</string>
+    <string name="category">Categoría</string>
+    <string name="task_title">Escribe el título</string>
+    <string name="descrition">Escribe la descripción</string>
+    <string name="save">Guardar</string>
+    <string name="task_saved">Tarea guardada</string>
 </resources>
