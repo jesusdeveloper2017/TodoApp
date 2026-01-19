@@ -10,12 +10,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 /**
  * Clase implementadora de la interface TaskLocalDataSource.kt
+ *
+ * Se usa @Inject constructor para indicar que los parámetros que se
+ * reciben los provee Hilt y que deben estar declarados en algún módulo
+ *
 */
-class RoomTaskLocalDataSource(private val taskDao:TaskDao,
-                              private val dispatcher:CoroutineDispatcher = Dispatchers.IO): TaskLocalDataSource {
+class RoomTaskLocalDataSource @Inject constructor(private val taskDao:TaskDao,
+                                                  private val dispatcher:CoroutineDispatcher = Dispatchers.IO): TaskLocalDataSource {
 
 
     override val taskFlow:Flow<List<Task>>

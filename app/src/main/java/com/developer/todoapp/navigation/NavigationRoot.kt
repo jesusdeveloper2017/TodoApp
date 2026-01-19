@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.NavHostController
@@ -23,9 +23,12 @@ fun NavigationRoot(navHostController:NavHostController){
 
             composable<HomeScreenRoute>{
 
-                //Se crea el viewmodel ya con los parámetros necesarios
-                val viewModel = viewModel<HomeScreenViewModel>(
-                    factory = HomeScreenViewModel.Factory)
+                /**
+                 * Se crea el viewmodel con hiltViewModel<> y
+                 * este ya contiene los parámetros que necesita
+                 * para funcionar
+                */
+                val viewModel = hiltViewModel<HomeScreenViewModel>()
 
                 HomeScreenRoot(navigateToTaskScreen = {
 
@@ -38,9 +41,12 @@ fun NavigationRoot(navHostController:NavHostController){
 
             composable <TaskScreenRoute> {
 
-                //Se crea el viewmodel ya con los parámetros necesarios
-                val viewModel = viewModel<TaskScreenViewModel>(
-                    factory = TaskScreenViewModel.Factory)
+                /**
+                 * Se crea el viewmodel con hiltViewModel<> y
+                 * este ya contiene los parámetros que necesita
+                 * para funcionar
+                */
+                val viewModel = hiltViewModel<TaskScreenViewModel>()
 
                 TaskScreenRoot(backToHomeScreen = {
 

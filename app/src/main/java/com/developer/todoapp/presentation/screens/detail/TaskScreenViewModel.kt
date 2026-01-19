@@ -7,30 +7,28 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
-import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.toRoute
-import com.developer.todoapp.AppMain
-import com.developer.todoapp.data.FakeTaskLocalDataSource
 import com.developer.todoapp.domain.Task
 import com.developer.todoapp.domain.TaskLocalDataSource
 import com.developer.todoapp.navigation.TaskScreenRoute
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import java.util.UUID
+import javax.inject.Inject
 
 /**
  * Se usa savedStateHandle para obtener los parámetros que envía
  * HomeScreenRoot a TaskScreenRoot
+ *
+ * Se usan @HiltViewModel @Inject constructor() para indicar que los parámetros
+ * que se reciben los provee Hilt y que deben estar declarados en algún módulo
 */
-class TaskScreenViewModel(savedStateHandle:SavedStateHandle,
-                          private val taskLocalDataSource:TaskLocalDataSource): ViewModel() {
-
+@HiltViewModel
+class TaskScreenViewModel @Inject constructor(savedStateHandle:SavedStateHandle,
+                                              private val taskLocalDataSource:TaskLocalDataSource): ViewModel() {
     //private val taskLocalDataSource = FakeTaskLocalDataSource
 
     var state by mutableStateOf(value = TaskScreenState())
@@ -138,28 +136,6 @@ class TaskScreenViewModel(savedStateHandle:SavedStateHandle,
                 else -> {
                     Log.e("","TaskScreenViewModel.kt->onAction()->NO se hace nada")
                 }
-            }
-        }
-    }
-
-    /**
-     * Se usa para que el viewmodel actual se cree con las dependencias
-     * o parámetros necesarios
-    */
-    companion object{
-
-        val Factory:ViewModelProvider.Factory = viewModelFactory {
-
-            initializer {
-
-                val savedStateHandle:SavedStateHandle = createSavedStateHandle()
-
-                val dataSource:TaskLocalDataSource =
-                    (this[APPLICATION_KEY] as AppMain).dataSource
-
-                //Se inicializa una instancia del viewModel actual
-                TaskScreenViewModel(taskLocalDataSource = dataSource,
-                                    savedStateHandle = savedStateHandle)
             }
         }
     }

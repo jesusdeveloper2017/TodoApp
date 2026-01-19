@@ -11,6 +11,8 @@ plugins {
     alias(libs.plugins.room)
     alias(libs.plugins.ksp)
 
+    //Hilt
+    alias(libs.plugins.dagger.hilt)
 }
 
 android {
@@ -100,5 +102,9 @@ dependencies {
     implementation(libs.room.runtime)
     ksp(libs.room.compiler)
 
+    //Hilt
+    implementation(libs.dagger.hilt.navigation.compose)
+    implementation(libs.dagger.hilt)
+    ksp(libs.dagger.hilt.compiler)
 
 }

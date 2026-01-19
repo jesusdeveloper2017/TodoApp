@@ -1,23 +1,15 @@
 package com.developer.todoapp
 
 import android.app.Application
-import com.developer.todoapp.data.local.DataSourceFactory
-import com.developer.todoapp.domain.TaskLocalDataSource
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
+import dagger.hilt.android.HiltAndroidApp
 
 /**
- * Se usa esta clase para proveer los parámetros necesarios
- * a los viewmodels de la aplicación (Es decir hacer la inyección
- * de dependencias de forma manual)
+ * Se utiliza la anotación HiltAndroidApp para indicar
+ * que la App usa inyección de dependencias
+ *
+ * Esta clase debe ir en el Manifest.xml:
+ *
+ *  android:name=".AppMain"
 */
-class AppMain: Application() {
-
-    private val dispatcherIO:CoroutineDispatcher
-        get() = Dispatchers.IO
-
-    //Se usa para proveer el dataSource a los viewmodels
-    val dataSource:TaskLocalDataSource
-        get() = DataSourceFactory.createDataSource(context = this, dispatcherIO)
-
-}
+@HiltAndroidApp
+class AppMain: Application()

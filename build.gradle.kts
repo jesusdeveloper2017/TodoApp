@@ -9,4 +9,7 @@ plugins {
     //Room
     alias(libs.plugins.room) apply false
     alias(libs.plugins.ksp) apply false
+
+    //Hilt
+    alias(libs.plugins.dagger.hilt) apply false
 }

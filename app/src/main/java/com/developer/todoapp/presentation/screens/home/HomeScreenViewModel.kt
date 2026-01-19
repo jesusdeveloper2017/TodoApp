@@ -14,6 +14,7 @@ import com.developer.todoapp.AppMain
 import com.developer.todoapp.data.FakeTaskLocalDataSource
 import com.developer.todoapp.domain.Task
 import com.developer.todoapp.domain.TaskLocalDataSource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -21,9 +22,14 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import javax.inject.Inject
 
-class HomeScreenViewModel(private val taskLocalDataSource:TaskLocalDataSource): ViewModel() {
-
+/**
+ * Se usan @HiltViewModel e @Inject constructor() para indicar que los parámetros
+ * que se reciben los provee Hilt y que deben estar declarados en algún módulo
+*/
+@HiltViewModel
+class HomeScreenViewModel @Inject constructor(private val taskLocalDataSource:TaskLocalDataSource): ViewModel() {
     //private val taskLocalDataSource = FakeTaskLocalDataSource
 
     var state by mutableStateOf(HomeScreenState())
@@ -113,26 +119,6 @@ class HomeScreenViewModel(private val taskLocalDataSource:TaskLocalDataSource): 
                 else -> {
                     Log.e("","HomeScreenViewModel.kt->onAction()->NO se hace nada")
                 }
-            }
-        }
-    }
-
-    /**
-     * Se usa para que el viewmodel actual se cree con las dependencias
-     * o parámetros necesarios
-    */
-    companion object{
-
-        val Factory:ViewModelProvider.Factory = viewModelFactory {
-
-            initializer {
-
-                val dataSource:TaskLocalDataSource =
-                    (this[APPLICATION_KEY] as AppMain).dataSource
-
-                //Se inicializa una instancia del viewModel actual
-                HomeScreenViewModel(taskLocalDataSource = dataSource)
-
             }
         }
     }
