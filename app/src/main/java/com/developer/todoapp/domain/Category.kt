@@ -5,5 +5,15 @@ enum class Category {
     WORK,
     PERSONAL,
     SHOPPING,
-    OTHER
+    OTHER;
+
+    companion object {
+
+        //Se usa para obtener la categoría a partir del ordinal
+        fun fromOrdinal(ordinal:Int?): Category? {
+
+            return entries.find { it.ordinal == ordinal }
+        }
+
+    }
 }

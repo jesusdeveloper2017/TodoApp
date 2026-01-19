@@ -5,13 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.developer.todoapp.AppMain
-import com.developer.todoapp.data.FakeTaskLocalDataSource
 import com.developer.todoapp.domain.Task
 import com.developer.todoapp.domain.TaskLocalDataSource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -43,6 +37,12 @@ class HomeScreenViewModel @Inject constructor(private val taskLocalDataSource:Ta
 
         //Se obtiene/actualiza la fecha y hora del dispositivo
         state = state.copy(date = LocalDate.now().let {
+
+            /**
+             * Opcionalmente se la puede dejar "EEE, MMMM dd yyy" 
+             * para que se muestren las 3 primeras letras del día 
+             * de a semana y no el nombre completo
+            */
             DateTimeFormatter.ofPattern("EEEE, MMMM dd yyy").format(it)
         })
 
