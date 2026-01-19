@@ -1,6 +1,7 @@
 package com.developer.todoapp.data.mapper
 
 import com.developer.todoapp.data.local.entities.TaskEntity
+import com.developer.todoapp.domain.Category
 import com.developer.todoapp.domain.Task
 import java.time.Instant
 import java.time.LocalDateTime
@@ -19,6 +20,7 @@ fun Task.toTaskEntity(): TaskEntity{
         title = title,
         description = description,
         isCompleted = isCompleted,
+        category = category?.ordinal,
         date = date)
 }
 
@@ -36,5 +38,6 @@ fun TaskEntity.toTask(): Task {
                 title = title,
                 description = description,
                 isCompleted = isCompleted,
+                category = category?.let { Category.fromOrdinal(ordinal = it) },
                 date = date)
 }

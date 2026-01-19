@@ -12,6 +12,6 @@ data class TaskEntity(
     val title:String,
     val description:String?,
     val isCompleted:Boolean,
-    //val category:Category? = null,
+    val category:Int? = null,
     val date:Long
 )

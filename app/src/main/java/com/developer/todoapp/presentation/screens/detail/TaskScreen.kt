@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -41,6 +42,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -147,7 +149,8 @@ fun TaskScreen(modifier:Modifier = Modifier,
                    modifier = modifier
                        .fillMaxSize()
                        .padding(paddingValues)
-                       .padding(horizontal = 16.dp)) {
+                       .padding(horizontal = 16.dp)
+                       .imePadding() /*Para que esta vista muestre un padding adicional cuando se abra el teclado */) {
 
                 Row(verticalAlignment = Alignment.CenterVertically){
 
@@ -230,6 +233,7 @@ fun TaskScreen(modifier:Modifier = Modifier,
                                textStyle = MaterialTheme.typography.headlineLarge.copy(
                                    color = MaterialTheme.colorScheme.onSurface
                                ),
+                               cursorBrush = SolidColor(MaterialTheme.colorScheme.secondary), //Se usa para cambiar el color del cursor
                                lineLimits = TextFieldLineLimits.SingleLine,
                                decorator = { innerBox ->
 
@@ -260,14 +264,31 @@ fun TaskScreen(modifier:Modifier = Modifier,
                                textStyle = MaterialTheme.typography.bodyLarge.copy(
                                    color = MaterialTheme.colorScheme.onSurface
                                ),
-                               modifier = Modifier
-                                   .fillMaxWidth()
-                                   .onFocusChanged {
+                               cursorBrush = SolidColor(MaterialTheme.colorScheme.secondary), //Se usa para cambiar el color del cursor
+                               //Se usa para limitar la altura de la caja de texto
+                               lineLimits = /*Si tiene el foco*/if(isDescriptionFocused) {
 
-                                       isDescriptionFocused = it.isFocused
+                                   /**
+                                    * Se coloca la cantidad mínima y máxima para
+                                    * la caja de texto actual
+                                   */
+                                   TextFieldLineLimits.MultiLine(
+                                       minHeightInLines = 1,
+                                       maxHeightInLines = 5
+                                   )
+                               }
+                                else{
 
-                                   },
-                               decorator = { innerBox ->
+                                    TextFieldLineLimits.Default
+
+                                },
+                                modifier = Modifier.fillMaxWidth()
+                                           .onFocusChanged {
+
+                                               isDescriptionFocused = it.isFocused
+
+                                          },
+                                decorator = { innerBox ->
 
                                    Column(modifier = Modifier.fillMaxWidth()) {
 
@@ -300,10 +321,8 @@ fun TaskScreen(modifier:Modifier = Modifier,
                         onAction(TaskScreenAction.OnSaveTask)
 
                     },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(46.dp)
-                ) {
+                    modifier = Modifier.fillMaxWidth()
+                               .padding(46.dp)) {
 
                     Text(text = stringResource(R.string.save),
                          style = MaterialTheme.typography.titleMedium.copy(
