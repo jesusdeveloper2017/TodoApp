@@ -203,85 +203,99 @@ fun HomeScreen(modifier:Modifier = Modifier,
             }
     ) { paddingValues ->
 
-        //Se usa LazyColumn para elementos que se cargan dinámicamente
-        LazyColumn(modifier = Modifier.padding(paddingValues)
-                              .padding(16.dp),
-                   verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        //Si NO hay tareas ni completadas ni incompletas
+        if (state.completedTasks.isEmpty() && state.incompletedTasks.isEmpty()) {
 
-            item {
+            Box(modifier = Modifier.fillMaxSize(),
+                contentAlignment = androidx.compose.ui.Alignment.Center) {
 
-                SummaryInfo(
-                    date = state.date,
-                    taskSummary = state.summary,
-                    completedTasks = state.completedTasks.size,
-                    totalTasks = (state.completedTasks.size + state.incompletedTasks.size)
+                //Se muestra un Texto
+                Text(
+                    text = stringResource(R.string.no_tasks),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.bodyLarge
                 )
+
             }
+        }
+        else{
 
-            //"Completadas"
-            //Se usa stickyHeader para que el título quede fijado aunque se haga scroll
-            stickyHeader {
-                SectionTitle(
-                    modifier = Modifier.fillParentMaxWidth()
-                               .background(color = MaterialTheme.colorScheme.surface),
-                    title = stringResource(R.string.complete_tasks)
-                )
-            }
+                //Se usa LazyColumn para elementos que se cargan dinámicamente
+                LazyColumn(modifier = Modifier.padding(paddingValues)
+                                      .padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)) {
 
-            items(items = state.completedTasks,
-                  key = { task -> task.id }) { task ->
+                    item {
 
-                TaskItem(
-                    modifier = Modifier.clip(shape = RoundedCornerShape(8.dp)),
-                    task = task,
-                    onClickItem = {
-
-                        //Se le pasa el id de la tarea existente para editarla
-                        onAction(HomeScreenAction.OnEditTask(task.id))
-
-                    },
-                    onDeleteItem = {
-
-                        onAction(HomeScreenAction.OnDeleteTask(task))
-
-                    },
-                    onToggleCompletion = {
-
-                        onAction(HomeScreenAction.OnToggleTask(task))
-
+                        SummaryInfo(date = state.date,
+                                    taskSummary = state.summary,
+                                    completedTasks = state.completedTasks.size,
+                                    totalTasks = (state.completedTasks.size + state.incompletedTasks.size)
+                        )
                     }
-                )
-            }
 
-            //"Incompletas"
-            //Se usa stickyHeader para que el título quede fijado aunque se haga scroll
-            stickyHeader {
-                SectionTitle(modifier = Modifier.fillParentMaxWidth()
-                                        .background(color = MaterialTheme.colorScheme.surface),
-                    title = stringResource(R.string.incomplete_tasks)
-                )
-            }
-
-            items(items = state.incompletedTasks,
-                  key = { task -> task.id }) { task ->
-
-                TaskItem(
-                    modifier = Modifier.clip(shape = RoundedCornerShape(8.dp)),
-                    task = task,
-                    onClickItem = {
-
-                        //Se le pasa el id de la tarea existente para editarla
-                        onAction(HomeScreenAction.OnEditTask(task.id))
-
-                    },
-                    onDeleteItem = {
-                        onAction(HomeScreenAction.OnDeleteTask(task))
-                    },
-                    onToggleCompletion = {
-                        onAction(HomeScreenAction.OnToggleTask(task))
+                    //"Completadas"
+                    //Se usa stickyHeader para que el título quede fijado aunque se haga scroll
+                    stickyHeader {
+                        SectionTitle(modifier = Modifier.fillParentMaxWidth()
+                                                .background(color = MaterialTheme.colorScheme.surface),
+                                    title = stringResource(R.string.complete_tasks)
+                        )
                     }
-                )
-            }
+
+                    items(items = state.completedTasks,
+                          key = { task -> task.id }) { task ->
+
+                        TaskItem(modifier = Modifier.clip(shape = RoundedCornerShape(8.dp)),
+                                 task = task,
+                                 onClickItem = {
+
+                                     //Se le pasa el id de la tarea existente para editarla
+                                     onAction(HomeScreenAction.OnEditTask(task.id))
+
+                                 },
+                                 onDeleteItem = {
+
+                                     onAction(HomeScreenAction.OnDeleteTask(task))
+
+                                 },
+                                 onToggleCompletion = {
+
+                                     onAction(HomeScreenAction.OnToggleTask(task))
+
+                                 }
+                        )
+                    }
+
+                    //"Incompletas"
+                    //Se usa stickyHeader para que el título quede fijado aunque se haga scroll
+                    stickyHeader {
+                        SectionTitle(modifier = Modifier.fillParentMaxWidth()
+                                                .background(color = MaterialTheme.colorScheme.surface),
+                                    title = stringResource(R.string.incomplete_tasks)
+                        )
+                    }
+
+                    items(items = state.incompletedTasks,
+                          key = { task -> task.id }) { task ->
+
+                        TaskItem(modifier = Modifier.clip(shape = RoundedCornerShape(8.dp)),
+                                 task = task,
+                                 onClickItem = {
+
+                                     //Se le pasa el id de la tarea existente para editarla
+                                     onAction(HomeScreenAction.OnEditTask(task.id))
+
+                                 },
+                                 onDeleteItem = {
+                                     onAction(HomeScreenAction.OnDeleteTask(task))
+                                 },
+                                 onToggleCompletion = {
+                                     onAction(HomeScreenAction.OnToggleTask(task))
+                                 }
+                        )
+                    }
+                }
         }
     }
 }

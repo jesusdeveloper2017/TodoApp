@@ -13,4 +13,5 @@
     <string name="descrition">Escribe la descripción</string>
     <string name="save">Guardar</string>
     <string name="task_saved">Tarea guardada</string>
+    <string name="no_tasks">No hay tareas creadas.</string>
 </resources>

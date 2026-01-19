@@ -29,6 +29,11 @@ class HomeScreenViewModel: ViewModel() {
 
     init {
 
+        /**
+         * Opcionalmente se la puede dejar "EEE, MMMM dd yyy"
+         * para que se muestren las 3 primeras letras del día
+         * de a semana y no el nombre completo
+        */
         //Se obtiene/actualiza la fecha y hora del dispositivo
         state = state.copy(date = LocalDate.now().let {
             DateTimeFormatter.ofPattern("EEEE, MMMM dd yyy").format(it)
