@@ -7,10 +7,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.toRoute
+import com.developer.todoapp.AppMain
 import com.developer.todoapp.data.FakeTaskLocalDataSource
 import com.developer.todoapp.domain.Task
+import com.developer.todoapp.domain.TaskLocalDataSource
 import com.developer.todoapp.navigation.TaskScreenRoute
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -21,9 +28,10 @@ import java.util.UUID
  * Se usa savedStateHandle para obtener los parámetros que envía
  * HomeScreenRoot a TaskScreenRoot
 */
-class TaskScreenViewModel(savedStateHandle:SavedStateHandle): ViewModel() {
+class TaskScreenViewModel(savedStateHandle:SavedStateHandle,
+                          private val taskLocalDataSource:TaskLocalDataSource): ViewModel() {
 
-    private val taskLocalDataSource = FakeTaskLocalDataSource
+    //private val taskLocalDataSource = FakeTaskLocalDataSource
 
     var state by mutableStateOf(value = TaskScreenState())
         private set //Se coloca esto para que no se pueda modificar desde la vista
@@ -130,6 +138,28 @@ class TaskScreenViewModel(savedStateHandle:SavedStateHandle): ViewModel() {
                 else -> {
                     Log.e("","TaskScreenViewModel.kt->onAction()->NO se hace nada")
                 }
+            }
+        }
+    }
+
+    /**
+     * Se usa para que el viewmodel actual se cree con las dependencias
+     * o parámetros necesarios
+    */
+    companion object{
+
+        val Factory:ViewModelProvider.Factory = viewModelFactory {
+
+            initializer {
+
+                val savedStateHandle:SavedStateHandle = createSavedStateHandle()
+
+                val dataSource:TaskLocalDataSource =
+                    (this[APPLICATION_KEY] as AppMain).dataSource
+
+                //Se inicializa una instancia del viewModel actual
+                TaskScreenViewModel(taskLocalDataSource = dataSource,
+                                    savedStateHandle = savedStateHandle)
             }
         }
     }

@@ -5,9 +5,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import com.developer.todoapp.AppMain
 import com.developer.todoapp.data.FakeTaskLocalDataSource
 import com.developer.todoapp.domain.Task
+import com.developer.todoapp.domain.TaskLocalDataSource
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -16,9 +22,9 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class HomeScreenViewModel: ViewModel() {
+class HomeScreenViewModel(private val taskLocalDataSource:TaskLocalDataSource): ViewModel() {
 
-    private val taskLocalDataSource = FakeTaskLocalDataSource
+    //private val taskLocalDataSource = FakeTaskLocalDataSource
 
     var state by mutableStateOf(HomeScreenState())
         private set //Se coloca esto para que no se pueda modificar desde la vista
@@ -107,6 +113,26 @@ class HomeScreenViewModel: ViewModel() {
                 else -> {
                     Log.e("","HomeScreenViewModel.kt->onAction()->NO se hace nada")
                 }
+            }
+        }
+    }
+
+    /**
+     * Se usa para que el viewmodel actual se cree con las dependencias
+     * o parámetros necesarios
+    */
+    companion object{
+
+        val Factory:ViewModelProvider.Factory = viewModelFactory {
+
+            initializer {
+
+                val dataSource:TaskLocalDataSource =
+                    (this[APPLICATION_KEY] as AppMain).dataSource
+
+                //Se inicializa una instancia del viewModel actual
+                HomeScreenViewModel(taskLocalDataSource = dataSource)
+
             }
         }
     }

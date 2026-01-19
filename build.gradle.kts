@@ -5,4 +5,8 @@ plugins {
 
     //Plugin de compose
     alias(libs.plugins.compose.compiler) apply false
+
+    //Room
+    alias(libs.plugins.room) apply false
+    alias(libs.plugins.ksp) apply false
 }

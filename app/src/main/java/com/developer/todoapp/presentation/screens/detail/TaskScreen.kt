@@ -2,7 +2,6 @@
 
 package com.developer.todoapp.presentation.screens.detail
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
 import android.util.Log
@@ -55,11 +54,12 @@ import com.developer.todoapp.presentation.screens.detail.providers.TaskScreenSta
 import com.developer.todoapp.ui.theme.TodoAppTheme
 import kotlinx.coroutines.flow.Flow
 
-@SuppressLint("LocalContextResourcesRead")
+//Se recibe el viewmodel por parámetro
 @Composable
-fun TaskScreenRoot(backToHomeScreen:() -> Unit){
+fun TaskScreenRoot(backToHomeScreen:() -> Unit,
+                   viewModel:TaskScreenViewModel){
 
-    val viewModel = viewModel<TaskScreenViewModel>()
+    //val viewModel = viewModel<TaskScreenViewModel>()
     val state:TaskScreenState = viewModel.state
     val event:Flow<TaskScreenEvent> = viewModel.event
 

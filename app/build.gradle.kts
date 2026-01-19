@@ -7,6 +7,10 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
 
+    //Room
+    alias(libs.plugins.room)
+    alias(libs.plugins.ksp)
+
 }
 
 android {
@@ -19,7 +23,7 @@ android {
     defaultConfig {
 
         applicationId = "com.developer.todoapp"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -56,6 +60,15 @@ android {
     buildFeatures {
         compose = true
     }
+
+    //Room
+    /**
+     * Se coloca para crear la base de datos de Room
+     * en el directorio del proyecto con el nombre "schemas"
+    */
+    room{
+        schemaDirectory("$projectDir/schemas")
+    }
 }
 
 dependencies {
@@ -81,4 +94,11 @@ dependencies {
 
     //Libreria Serializacion
     implementation(libs.kotlinx.serialization.json)
+
+    //Room
+    implementation(libs.room.ktx)
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
+
+
 }

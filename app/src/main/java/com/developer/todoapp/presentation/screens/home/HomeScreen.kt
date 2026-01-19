@@ -50,10 +50,12 @@ import com.developer.todoapp.ui.theme.TodoAppTheme
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.flow.Flow
 
+//Se recibe el viewmodel por parámetro
 @Composable
-fun HomeScreenRoot(navigateToTaskScreen:(id:String?)-> Unit){
+fun HomeScreenRoot(navigateToTaskScreen:(id:String?)-> Unit,
+                   viewModel:HomeScreenViewModel){
 
-    val viewModel = viewModel<HomeScreenViewModel>()
+    //val viewModel = viewModel<HomeScreenViewModel>()
     val state:HomeScreenState = viewModel.state
     val event:Flow<HomeScreenEvent> = viewModel.event
 
